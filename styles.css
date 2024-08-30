@@ -1,0 +1,115 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --movement-distance: 80px;
+  --movement-distance-reverce: -80px;
+  --movement-time-duration: 0.3s;
+  --card-width: 74px;
+}
+
+.button {
+  padding: 0;
+  
+  border: none;
+
+  text-transform: uppercase;
+  background-color: transparent;
+}
+
+.button:active {
+  filter: opacity(.5);
+}
+
+body {
+  margin: 0;
+}
+
+.window {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100vh;
+}
+
+.window__game {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  align-items: center;
+  gap: 6px;
+
+  padding: 10px;
+
+  background-color: royalblue;
+}
+
+.board__card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: var(--card-width);
+  aspect-ratio: 1;
+
+  font-size: 30px;
+  border: 1px solid black;
+
+  position: relative;
+  animation-duration: var(--movement-time-duration);
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  row-gap: 10px;
+}
+
+.motion-right {
+  animation-name: motion-right;
+}
+
+.motion-left {
+  animation-name: motion-left;
+}
+
+.motion-up {
+  animation-name: motion-up;
+}
+
+.motion-down {
+  animation-name: motion-down;
+}
+
+@keyframes motion-right {
+  from{}
+
+  to{transform: translateX(var(--movement-distance));}
+}
+
+@keyframes motion-left {
+  from{}
+  
+  to{transform: translateX(var(--movement-distance-reverce));}
+}
+
+@keyframes motion-up {
+  from{}
+
+  to{ transform: translateY(var(--movement-distance-reverce)); }
+}
+
+@keyframes motion-down {
+  from{}
+
+  to{ transform: translateY(var(--movement-distance)); }
+}
