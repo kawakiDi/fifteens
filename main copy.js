@@ -12,7 +12,7 @@ const controlBoard = [
   [ 13, 14, 15, ' ' ],
 ]
 const keyPass   = ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown']
-const clickPass   = ['start','finish']
+const clickPass = ['start','finish']
       
 const forRandomNumber = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 
@@ -49,9 +49,9 @@ function keyOut(event) {
 
     if( event.key === 'ArrowLeft') {
       let locationEmptyCell = findEmptyCell(gameBoard)
-      let axisY = locationEmptyCell[0]
-      let axisX = locationEmptyCell[1]
-      let hold = ''
+      let axisY             = locationEmptyCell[0]
+      let axisX             = locationEmptyCell[1]
+      let hold              = ''
 
       if (axisX !== 0) {
         hold                        = gameBoard[axisY][axisX]
@@ -64,9 +64,9 @@ function keyOut(event) {
   }
     if( event.key === 'ArrowRight') {
       let locationEmptyCell = findEmptyCell(gameBoard)
-      let axisY = locationEmptyCell[0]
-      let axisX = locationEmptyCell[1]
-      let hold = ''
+      let axisY             = locationEmptyCell[0]
+      let axisX             = locationEmptyCell[1]
+      let hold              = ''
 
       if (axisX !== 3) {
       hold                        = gameBoard[axisY][axisX]
@@ -78,9 +78,9 @@ function keyOut(event) {
     }
     if( event.key === 'ArrowUp') {
       let locationEmptyCell = findEmptyCell(gameBoard)
-      let axisY = locationEmptyCell[0]
-      let axisX = locationEmptyCell[1]
-      let hold = ''
+      let axisY             = locationEmptyCell[0]
+      let axisX             = locationEmptyCell[1]
+      let hold              = ''
 
       if (axisY !== 0) {
       hold                        = gameBoard[axisY][axisX]
@@ -92,9 +92,9 @@ function keyOut(event) {
     }
     if( event.key === 'ArrowDown') {
       let locationEmptyCell = findEmptyCell(gameBoard)
-      let axisY = locationEmptyCell[0]
-      let axisX = locationEmptyCell[1]
-      let hold = ''
+      let axisY             = locationEmptyCell[0]
+      let axisX             = locationEmptyCell[1]
+      let hold              = ''
 
       if (axisY !== 3) {
       hold                        = gameBoard[axisY][axisX]
@@ -119,7 +119,7 @@ function clickOut(event) {
 
 function startGame() {
   let emptyArray = [...forRandomNumber]
-  let indexCell = 0
+  let indexCell  = 0
 
   for (let i = 0; i !== 15;) {
     let number = getRandomNumber(1, 15)
@@ -185,4 +185,4 @@ window.addEventListener('keydown', keyOut)
 
 window.addEventListener('click', clickOut)
 
-// console.log(board)
+  // console.log(board)

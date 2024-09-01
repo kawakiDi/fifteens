@@ -1,10 +1,9 @@
 const board        = document.querySelector('.board')
-const patternBoard = Array(15).fill(0)
+const patternBoard = Array(16).fill(0)
 const keyPass      = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']
-const config       = { time: 100, }
-let   gameBoard    = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+const config       = { time: 100, arrayLength: 15, positionX: 3, positionY: 3,}
+let   gameBoard    = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0]
 let   isDone       = true
-
 
 window.addEventListener('keydown', (event) => {
   if(isDone) {
@@ -25,7 +24,7 @@ function getRandomNumber(min, max) {
 function startGame() {
   gameBoard = [...patternBoard]
 
-  for (let i = 0; i !== 15;) {
+  for (let i = 0; i < config.arrayLength;) {
     let number = getRandomNumber(1, 15)
 
     if (gameBoard.includes(number)) {
@@ -42,7 +41,7 @@ function startGame() {
 }
 
 function endGame() {
-  for( let i = 0; i < 15; i++ ) {
+  for( let i = 0; i < config.arrayLength; i++ ) {
     if( Number(board.children[i].innerText) !== i + 1) {
       return console.log( 'Not yeat!' )
     }
@@ -51,27 +50,25 @@ function endGame() {
 }
 
 function checkinErrors(array) {
-  let count = 0
+  let countErrors = 0
 
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < config.arrayLength; i++) {
     if (array[i] > array[i + 1]) {
-      count++
+      countErrors++
     } else {
       continue
     }
   }
 
-  if (count % 2 === 0) {
-    console.log( 'pass' )
+  if (countErrors % 2 === 0) {
     setNumbers(array)
   } else {
     startGame()
-    console.log( 'not-pass' )
   }
 }
 
 function setNumbers(array) {
-  for ( let i = 0; i < 15; i++ ) {
+  for ( let i = 0; i < config.arrayLength; i++ ) {
     board.children[i].innerText = array[i]
   }
 }
@@ -82,11 +79,13 @@ function keyOut(event) {
     let   emptyCell  = findEmptyCell()
     
     if( event.key === 'ArrowLeft' ) {
-      let filledCell     = emptyCell - 1
-      let checkBoardWall = emptyCell + filledCell
+      let filledCell = emptyCell - 1
       
-      if( checkBoardWall !== 23 && checkBoardWall !== 15 && checkBoardWall !== 7 && filledCell >= 0 ) {
+      if( config.positionX > 0 ) {
+        config.positionX--
+
         isDone = !isDone
+
         boardCards[ emptyCell  ].classList.toggle( 'motion-left' )
         boardCards[ filledCell ].classList.toggle( 'motion-right' )
 
@@ -105,10 +104,11 @@ function keyOut(event) {
     }
 
     if( event.key === 'ArrowRight' ) {
-      let filledCell     = emptyCell + 1
-      let checkBoardWall = emptyCell + filledCell
+      let filledCell = emptyCell + 1
 
-      if( checkBoardWall !== 23 && checkBoardWall !== 15 && checkBoardWall !== 7 && emptyCell != 15 ) {
+      if( config.positionX < 3 ) {
+        config.positionX++
+
         isDone = !isDone
 
         boardCards[ emptyCell  ].classList.toggle( 'motion-right' )
@@ -132,13 +132,16 @@ function keyOut(event) {
     if( event.key === 'ArrowUp' ) {
       let filledCell = emptyCell - 4
 
-      if( filledCell >= 0 ) {
+      if( config.positionY > 0 ) {
+        config.positionY--
+
         isDone = !isDone
+
         boardCards[ emptyCell  ].classList.toggle( 'motion-up' )
         boardCards[ filledCell ].classList.toggle( 'motion-down' )
 
         setTimeout(() => {
-        boardCards[ emptyCell  ].style.order  = Number(boardCards[ emptyCell ].style.order) - 4
+        boardCards[ emptyCell  ].style.order = Number(boardCards[ emptyCell ].style.order) - 4
         boardCards[ filledCell ].style.order = Number(boardCards[ filledCell ].style.order) + 4
 
         boardCards[ emptyCell  ].classList.toggle( 'motion-up' )
@@ -155,8 +158,11 @@ function keyOut(event) {
     if (event.key === 'ArrowDown') {
       let filledCell = emptyCell + 4
 
-      if( filledCell < 16 ) {
+      if( config.positionY < 3 ) {
+        config.positionY++
+
         isDone = !isDone
+
         boardCards[ emptyCell ].classList.toggle( 'motion-down' )
         boardCards[ filledCell ].classList.toggle( 'motion-up' )
 
@@ -174,14 +180,12 @@ function keyOut(event) {
         }, config.time)
       }
     }
-
-    // testFindErrors()
   }
 }
 
 function findEmptyCell() {
-  for( let i = 0; i < 16; i++ ) {
-    if( board.children[i].textContent === '' ) {
+  for ( let i = 0; i <= config.arrayLength; i++ ) {
+    if( Number( board.children[i].innerText ) === 0 ) {
       return i
     }
   }
@@ -189,9 +193,20 @@ function findEmptyCell() {
 
 function clickOut(event) {
   if( event.target.classList.value.includes('start') ) {
-    board.lastElementChild.innerText = ''
+    for( let i = 0; i < config.arrayLength; i++ ) {
+      board.children[i].classList.remove( 'board__card--epty' )
+    }
+
+    board.children[config.arrayLength].classList.add( 'board__card--epty' )
+
+    board.children[config.arrayLength].innerText = 0
+
+    config.positionX = 3
+    config.positionY = 3
+
     startGame()
   }
+
   if( event.target.classList.value.includes('finish') ) {
     endGame()
   }
@@ -199,11 +214,11 @@ function clickOut(event) {
 
 // let countErrors = 0
 
-// function testFindErrors() {
-//   for( let i = 0; i < 16; i++) {
-//     let orderNum = Number( board.children[i].style.order )
-//     if( orderNum !== i ) {
-//       countErrors++
-//     }
-//   }
+    // function testFindErrors() {
+    //   for( let i = 0; i < 16; i++) {
+    //     let orderNum = Number( board.children[i].style.order )
+    //     if( orderNum !== i ) {
+    //       countErrors++
+    //     }
+    //   }
 // }
